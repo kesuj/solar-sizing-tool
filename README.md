@@ -1,5 +1,7 @@
 # Off-grid Solar Sizing Calculator
 
+**Live demo:** https://kesuj.github.io/solar-sizing-tool/ · [Sample PDF report](docs/sample-report.pdf)
+
 This is a browser tool for sizing a first-pass off-grid solar PV and battery system. You list the loads, check the site and equipment assumptions, and it returns:
 
 - the number of solar panels
