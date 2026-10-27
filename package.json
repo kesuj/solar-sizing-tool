@@ -1,0 +1,1 @@
+{"name":"solar-sizing-tool","version":"0.1.0","type":"module","private":true,"scripts":{"test":"node --test test/engine.test.js","test:ui":"node test/ui_test.mjs http://localhost:8766/"}}

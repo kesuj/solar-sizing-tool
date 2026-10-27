@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Off-grid Solar Sizing Calculator</title>
+<meta name="description" content="Size an off-grid solar PV and battery system: loads, panels, battery bank, inverter, MPPT controller and DC cables, with a printable report.">
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<header class="top no-print">
+  <div class="wrap">
+    <h1>Off-grid Solar Sizing Calculator</h1>
+    <p>List the loads, check the assumptions, and get panel, battery, inverter, controller and cable sizes with every step shown. Print or save the report as a PDF.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel no-print" aria-labelledby="proj-h">
+    <h2 id="proj-h">Project</h2>
+    <div class="grid3">
+      <label>Project name<input id="project" value="Off-grid health post"></label>
+      <label>Prepared for<input id="client" placeholder="Client name"></label>
+      <label>Start from an example
+        <select id="preset">
+          <option value="clinic">Health post (lights, vaccine fridge, laptop)</option>
+          <option value="home">Rural home (lights, TV, fan, phone charging)</option>
+          <option value="shop">Small shop (lights, freezer, POS, router)</option>
+          <option value="blank">Blank</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="panel no-print" aria-labelledby="loads-h">
+    <h2 id="loads-h">Loads</h2>
+    <p class="hint">For appliances that cycle (fridges, pumps), enter the hours the compressor or motor actually runs per day. Surge is the start-up multiple (fridge or pump compressors are often 3-7x).</p>
+    <div class="table-scroll">
+      <table class="loads">
+        <thead><tr><th>Appliance</th><th>Watts</th><th>Qty</th><th>Hours/day</th><th>Surge x</th><th>DC?</th><th>Wh/day</th><th><span class="vh">Remove</span></th></tr></thead>
+        <tbody id="load-rows"></tbody>
+      </table>
+    </div>
+    <button type="button" id="add-load" class="btn ghost">+ Add load</button>
+  </section>
+
+  <section class="panel no-print" aria-labelledby="ass-h">
+    <h2 id="ass-h">Site and equipment assumptions</h2>
+    <div class="grid3">
+      <label>Peak sun hours (worst month)<input type="number" step="0.1" min="0.5" max="9" data-opt="peakSunHours"></label>
+      <label>Days of autonomy<input type="number" step="0.5" min="0" max="10" data-opt="autonomyDays"></label>
+      <label>Battery chemistry
+        <select id="chem"><option value="lfp">LiFePO4 (80% DoD, 95% eff.)</option><option value="pb">Lead-acid (50% DoD, 85% eff.)</option><option value="custom">Custom</option></select>
+      </label>
+      <label>Depth of discharge<input type="number" step="0.05" min="0.2" max="1" data-opt="depthOfDischarge"></label>
+      <label>Battery round-trip efficiency<input type="number" step="0.01" min="0.5" max="1" data-opt="batteryEfficiency"></label>
+      <label>Battery unit (V)<input type="number" step="0.1" data-opt="batteryUnitVolts"></label>
+      <label>Battery unit (Ah)<input type="number" step="1" data-opt="batteryUnitAh"></label>
+      <label>Panel rating (W)<input type="number" step="5" data-opt="panelWatts"></label>
+      <label>System derate (PV losses)<input type="number" step="0.01" min="0.5" max="1" data-opt="systemDerate"></label>
+      <label>Inverter efficiency<input type="number" step="0.01" min="0.5" max="1" data-opt="inverterEfficiency"></label>
+      <label>Share of AC loads on at once<input type="number" step="0.05" min="0.1" max="1" data-opt="diversityFactor"></label>
+      <label>System voltage
+        <select data-opt="systemVolts"><option value="auto">Auto</option><option>12</option><option>24</option><option>48</option></select>
+      </label>
+      <label>Battery to inverter cable (m, one way)<input type="number" step="0.5" min="0.5" data-opt="cableBatteryInverterM"></label>
+      <label>Controller to battery cable (m, one way)<input type="number" step="0.5" min="0.5" data-opt="cableControllerBatteryM"></label>
+      <label>Max voltage drop (%)<input type="number" step="0.5" min="1" max="5" data-opt="maxVoltageDropPct"></label>
+    </div>
+  </section>
+
+  <section id="report" class="report" aria-live="polite"></section>
+
+  <div class="actions no-print">
+    <button type="button" id="print" class="btn">Print / save PDF</button>
+    <button type="button" id="csv" class="btn ghost">Download CSV</button>
+    <button type="button" id="share" class="btn ghost">Copy shareable link</button>
+    <span id="share-ok" class="hint" role="status"></span>
+  </div>
+</main>
+
+<footer class="wrap muted">
+  <p>Preliminary sizing aid. It is not a stamped engineering design. Check the results against local electrical codes, manufacturer datasheets (panel Voc/Isc, controller input limits, battery BMS limits), protection devices and site conditions before buying or installing anything.</p>
+</footer>
+<script type="module" src="src/app.js"></script>
+</body>
+</html>
